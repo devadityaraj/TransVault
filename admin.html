@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Upload and QR Generation</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" href="adminfavicon.png" type="image/x-icon">  
+    <style>
+        #qrCodeContainer {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #qrCodeContainer img {
+            max-width: 100%;
+            height: auto;
+        }
+        #signupContainer {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+      </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="content">
+        <div class="hamburger-menu" id="menuToggle">
+            <div class="hamburger-icon"></div>
+            <div class="hamburger-icon"></div>
+            <div class="hamburger-icon"></div>
+        </div>     
+        <div class="menu-dropdown hidden" id="menuDropdown">
+            <ul>
+                <li><a href="http://localhost:3000/signup.html">Add Users</a></li>
+                <li><a href="http://localhost:3000/history.html">Check Login History</a></li>
+                <li><a href="http://localhost:3000/index.html">LogOut</a></li>
+                <li><a href="http://localhost:3000/upcoming.html">Upcoming Features</a></li>
+                </ul>
+        </div>
+ <!--   <img src="transvaultlogo.png" alt="TransVault Logo" id="transVaultLogo"> -->
+    <form id="uploadForm" action="http://localhost:3000/upload" method="POST" enctype="multipart/form-data">
+        <div>
+            <h2>Additional Data Entry</h2>
+            <label for="dispatch_id">Dispatch ID:</label>
+            <input type="text" id="dispatch_id" name="dispatch_id"><br><br>
+            <label for="date_dispatch">Date of Dispatch:</label>
+            <input type="date" id="date_dispatch" name="date_dispatch"><br><br>
+            <label for="time_dispatch">Time of Dispatch:</label>
+            <input type="time" id="time_dispatch" name="time_dispatch"><br><br>
+        </div>
+        <div>
+            <h2>Sender Details</h2>
+            <label for="sender_company">Sender Company:</label>
+            <input type="text" id="sender_company" name="sender_company"><br><br>
+            <label for="sender_contact">Contact Person:</label>
+            <input type="text" id="sender_contact" name="sender_contact"><br><br>
+            <label for="sender_phone">Phone Number:</label>
+            <input type="text" id="sender_phone" name="sender_phone"><br><br>
+            <label for="sender_email">Email Address:</label>
+            <input type="email" id="sender_email" name="sender_email"><br><br>
+            <label for="sender_address">Address:</label>
+            <textarea id="sender_address" name="sender_address"></textarea><br><br>
+        </div>
+        <div>
+            <h2>Receiver Details</h2>
+            <label for="receiver_company">Receiver Company:</label>
+            <input type="text" id="receiver_company" name="receiver_company"><br><br>
+            <label for="receiver_contact">Contact Person:</label>
+            <input type="text" id="receiver_contact" name="receiver_contact"><br><br>
+            <label for="receiver_phone">Phone Number:</label>
+            <input type="text" id="receiver_phone" name="receiver_phone"><br><br>
+            <label for="receiver_email">Email Address:</label>
+            <input type="email" id="receiver_email" name="receiver_email"><br><br>
+            <label for="receiver_address">Address:</label>
+            <textarea id="receiver_address" name="receiver_address"></textarea><br><br>
+        </div>
+        <div>
+            <h2>Truck Details</h2>
+            <label for="truck_number">Truck Number:</label>
+            <input type="text" id="truck_number" name="truck_number"><br><br>
+            <label for="truck_type">Truck Type:</label>
+            <input type="text" id="truck_type" name="truck_type"><br><br>
+        </div>
+        <div>
+            <h2>Drivers</h2>
+            <div id="drivers-container"></div>
+            <button type="button" onclick="addDriver()">Add Driver</button><br><br>
+        </div>
+        <div>
+            <h2>Cargo Details</h2>
+            <label for="cargo_description">Description:</label>
+            <textarea id="cargo_description" name="cargo_description"></textarea><br><br>
+            <label for="cargo_weight">Weight:</label>
+            <input type="text" id="cargo_weight" name="cargo_weight"><br><br>
+            <label for="cargo_length">Length:</label>
+            <input type="text" id="cargo_length" name="cargo_length"><br><br>
+            <label for="cargo_width">Width:</label>
+            <input type="text" id="cargo_width" name="cargo_width"><br><br>
+            <label for="cargo_height">Height:</label>
+            <input type="text" id="cargo_height" name="cargo_height"><br><br>
+        </div>
+        <div>
+            <h2>Route and Additional Details</h2>
+            <label for="pickup_location">Pickup Location:</label>
+            <input type="text" id="pickup_location" name="pickup_location"><br><br>
+            <label for="delivery_location">Delivery Location:</label>
+            <input type="text" id="delivery_location" name="delivery_location"><br><br>
+            <label for="estimated_pickup_time">Estimated Pickup Time:</label>
+            <input type="datetime-local" id="estimated_pickup_time" name="estimated_pickup_time"><br><br>
+            <label for="estimated_delivery_time">Estimated Delivery Time:</label>
+            <input type="datetime-local" id="estimated_delivery_time" name="estimated_delivery_time"><br><br>
+            <label for="route_details">Route Details:</label>
+            <textarea id="route_details" name="route_details"></textarea><br><br>
+            <label for="special_instructions">Special Instructions:</label>
+            <textarea id="special_instructions" name="special_instructions"></textarea><br><br>
+        </div>
+        <div>
+            <h2>Documentation</h2>
+            <label for="insurance_details">Insurance Details:</label>
+            <input type="text" id="insurance_details" name="insurance_details"><br><br>
+            <label for="permit_numbers">Permit Numbers:</label>
+            <input type="text" id="permit_numbers" name="permit_numbers"><br><br>
+            <label for="customs_docs">Customs Documentation:</label>
+            <input type="text" id="customs_docs" name="customs_docs"><br><br>
+            <label for="attachments">Attachments:</label>
+            <input type="text" id="attachments" name="attachments"><br><br>
+            <label for="authorized_by">Authorized By:</label>
+            <input type="text" id="authorized_by" name="authorized_by"><br><br>
+            <label for="signature">Signature:</label>
+            <input type="text" id="signature" name="signature"><br><br>
+        </div>
+        <div class="file-upload-container">
+            <label for="driverDetails" class="custom-file-upload">
+                <input type="file" name="documents" id="driverDetails" multiple>
+                <svg
+                    aria-hidden="true"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                    <path
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125"
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                    ></path>
+                    <path
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M17 15V18M17 21V18M17 18H14M17 18H20"
+                    ></path>
+                </svg>
+                <span>Upload Driver Documents</span>
+            </label>
+        </div> 
+        <div class="file-upload-container">
+            <label for="vehicleDocs" class="custom-file-upload">
+                <input type="file" name="documents" id="vehicleDocs" multiple>
+                <svg
+                    aria-hidden="true"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125"
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                    ></path>
+                    <path
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M17 15V18M17 21V18M17 18H14M17 18H20"
+                    ></path>
+                </svg>
+                <span>Upload Vehicle Documents</span>
+            </label>
+        </div>   
+        <div class="file-upload-container">
+            <label for="logisticsDocs" class="custom-file-upload">
+                <input type="file" name="documents" id="logisticsDocs" multiple>
+                <svg
+                    aria-hidden="true"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125"
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                    ></path>
+                    <path
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M17 15V18M17 21V18M17 18H14M17 18H20"
+                    ></path>
+                </svg>
+                <span>Upload Logistics Documents</span>
+            </label>
+        </div>  
+        <div class="file-upload-container">
+            <label for="miscellaneousDocs" class="custom-file-upload">
+                <input type="file" name="documents" id="miscellaneousDocs" multiple>
+                <svg
+                    aria-hidden="true"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125"
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                    ></path>
+                    <path
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M17 15V18M17 21V18M17 18H14M17 18H20"
+                    ></path>
+                </svg>
+                <span>Upload Miscellaneous Documents (if any) </span>
+            </label>
+        </div>
+        <button type="button" onclick="submitForm()">Upload</button>
+    </form>
+    <div id="qrCodeContainer" style="display: none; text-align: center; margin-top: 20px;">
+        <h2>QR Code Generated</h2>
+        <img id="qrCodeImage" src="" alt="QR Code" style="max-width: 100%; height: auto;">
+        <button onclick="printQRCode()">Print QR Code</button>
+        <button onclick="shareQRCode()">Share QR Code</button>
+    </div>
+    </div>
+    <script>
+        function addDriver() {
+            const driverContainer = document.getElementById('drivers-container');
+            const driverCount = driverContainer.children.length + 1;
+            const driverDiv = document.createElement('div');
+            driverDiv.className = 'driver-entry';
+            driverDiv.innerHTML = `
+                <fieldset>
+                    <legend>Driver ${driverCount}</legend>
+                    <label for="driver-name-${driverCount}">Driver Name:</label>
+                    <input type="text" id="driver-name-${driverCount}" name="driver_name_${driverCount}"><br><br>
+                    <label for="driver-phone-${driverCount}">Driver Phone Number:</label>
+                    <input type="text" id="driver-phone-${driverCount}" name="driver_phone_${driverCount}"><br><br>
+                    <button type="button" onclick="removeDriver(this)">Remove Driver</button>
+                </fieldset>           `;
+            driverContainer.appendChild(driverDiv);
+        }
+   
+        function removeDriver(button) {
+            const driverContainer = document.getElementById('drivers-container');
+            driverContainer.removeChild(button.parentElement.parentElement);
+        }
+    
+        async function submitForm() {
+            const form = document.getElementById('uploadForm');
+            const formData = new FormData(form);
+            const uploadData = new FormData();
+            for (const [key, value] of formData.entries()) {
+                if (key === 'documents') {
+                    continue;
+                }
+                if (Array.isArray(value)) {
+                    value.forEach(val => uploadData.append(key, val));
+                } else {
+                    uploadData.append(key, value);
+                }
+            }
+    
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            fileInputs.forEach(input => {
+                const files = input.files;
+                for (const file of files) {
+                    uploadData.append(input.name, file);
+                }
+            });
+    
+            try {
+                const response = await fetch('http://localhost:3000/upload', {
+                    method: 'POST',
+                    body: uploadData
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+    
+                const data = await response.json();
+                console.log('Upload successful:', data);
+
+                const qrCodeImage = document.getElementById('qrCodeImage');
+                qrCodeImage.src = data.qrCodeUrl;
+                document.getElementById('qrCodeContainer').style.display = 'block';
+    
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    
+        function signup() {
+            window.location.href='http://localhost:3000/signup.html';
+        
+        }
+</script>
+
+    <script>
+    async function shareQRCode() {
+        const qrCodeImage = document.getElementById('qrCodeImage');
+        try {
+            const response = await fetch(qrCodeImage.src);
+            const blob = await response.blob();
+            const file = new File([blob], 'qrcode.png', { type: blob.type });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    title: 'QR Code',
+                    text: 'Here is the QR code generated for your documents.',
+                    files: [file]
+                });
+            } else {
+                alert('Sharing is not supported on this browser or device.');
+            }
+        } catch (error) {
+            console.error('Error sharing:', error);
+        }
+    }
+
+    function printQRCode() {
+    const qrCodeImage = document.getElementById('qrCodeImage');
+    const printWindow = window.open('', '_blank');
+    printWindow.document.open();
+    printWindow.document.write(` <html>
+        <head>
+            <title>Print QR Code</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+                img {
+                    transform: scale(4);
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+            </style>
+        </head>
+        <body>
+            <img src="${qrCodeImage.src}" alt="QR Code">
+        </body>
+        </html>`);
+    printWindow.document.close();
+    printWindow.print();
+}
+</script>
+
+<script>
+    window.addEventListener('load', () => {
+        const overlay = document.querySelector('.overlay');
+        const content = document.querySelector('.content');
+        setTimeout(() => {
+            overlay.classList.add('fade-out');
+            overlay.addEventListener('transitionend', () => {
+                overlay.style.display = 'none';
+                content.style.display = 'block';
+                document.body.style.overflow = 'auto'; 
+            });
+        }, 1500);
+    });
+</script>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+    const menu = document.getElementById('menuDropdown');
+    const hamburger = document.getElementById('menuToggle');
+    
+    if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        menu.style.opacity = '1';
+        menu.style.transform = 'translateY(0)';
+        menu.style.pointerEvents = 'auto'; // Enable interactions
+        hamburger.classList.add('active');
+    } else {
+        menu.style.opacity = '0';
+        menu.style.transform = 'translateY(-20px)';
+        menu.style.pointerEvents = 'none'; // Disable interactions
+        hamburger.classList.remove('active');
+        setTimeout(() => {
+            menu.classList.add('hidden');
+        }, 300);
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+:root {
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+    --form-bg: rgba(255, 255, 255, 0.8);
+    --input-bg: #fff;
+    --input-border: #ccc;
+    --button-bg: #007bff;
+    --button-hover-bg: #0056b3;
+    --qr-code-bg: rgba(255, 255, 255, 0.9);
+    --menu-bg: #fff;
+    --menu-text-color: #333;
+    --slider-bg: #2196f3;
+    --slider-before-bg: yellow;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    background: var(--form-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    max-width: 900px;
+    margin: 50px auto;
+    backdrop-filter: blur(8px); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-color);
+    margin-bottom: 15px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="datetime-local"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.3);
+}
+
+button {
+    background-color: var(--button-bg);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.02);
+}
+
+#qrCodeContainer {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--qr-code-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+#qrCodeContainer h2 {
+    margin: 0 0 10px;
+    color: var(--text-color);
+}
+
+#qrCodeContainer img {
+    max-width: 600px;
+    height: auto;
+    transition: transform 0.2s ease;
+}
+
+#qrCodeContainer img:hover {
+    transform: scale(1.05);
+}
+
+#qrCodeContainer button {
+    margin: 10px;
+}
+
+.file-upload-container {
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    gap: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.7), 0 2px 4px -1px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+}
+
+.custom-file-upload:focus,
+.custom-file-upload:active {
+    opacity: 0.85;
+    box-shadow: none;
+}
+
+.custom-file-upload svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.custom-file-upload span {
+    display: inline-block;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('transvaultintro.png') no-repeat center center;
+    background-size: cover;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+.content {
+    display: none;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.hamburger-icon {
+    width: 30px;
+    height: 3px;
+    background-color: var(--text-color);
+    margin: 5px 0;
+    transition: 0.4s;
+}
+
+.menu-dropdown {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background-color: var(--menu-bg);
+    color: var(--menu-text-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    z-index: 1000;
+    width: 200px;
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none; /* Disable interactions by default */
+    transition: opacity 0.3s, transform 0.3s, pointer-events 0.3s;
+}
+
+
+.menu-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-dropdown ul li {
+    margin: 10px 0;
+}
+
+.menu-dropdown ul li a {
+    color: var(--menu-text-color);
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-dropdown ul li a:hover {
+    background-color: #555;
+}
+

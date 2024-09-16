@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Log Viewer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            box-sizing: border-box;
+            text-align: center;
+            background: url(truck.jpg);
+        }
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .container h1 {
+            color: #ffffff;
+        }
+        .section {
+            background-color: whitesmoke;
+            padding: 50px 30px;
+            border: 1.5px solid #b2b2b2;
+            border-radius: 0.25em;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.25);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #b2b2b2;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            position: sticky;
+            top: 0;
+        }
+        /* Style the table */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Style for the table header row */
+thead {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+thead th {
+  padding: 15px;
+  font-size: 16px;
+}
+
+/* Style for the table body rows */
+tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+  background-color: #e9e9e9;
+}
+
+tbody td {
+  font-size: 14px;
+  color: #333;
+}
+
+tfoot {
+  background-color: #f1f1f1;
+  font-weight: bold;
+  color: #333;
+}
+
+tfoot td {
+  padding: 15px;
+}
+
+/* Add responsive design for smaller screens */
+@media (max-width: 768px) {
+  th, td {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>History Log</h1>
+        <div class="section">
+            <div id="history-table"></div>
+        </div>
+    </div>
+
+    <script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    const historyTable = document.getElementById('history-table');
+
+    fetch('http://localhost:3000/history.json') // Update the port number if necessary
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableHtml = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>IP Address</th>
+                            <th>GPS</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(entry => `
+                            <tr>
+                                <td>${entry.id}</td>
+                                <td>${entry.ip}</td>
+                                <td>${entry.gps}</td>
+                                <td>${entry.date}</td>
+                                <td>${entry.time}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            historyTable.innerHTML = tableHtml;
+        })
+        .catch(error => {
+            console.error('Error fetching history data:', error);
+            historyTable.innerHTML = 'Error fetching history data.';
+        });
+});
+
+</script>    
+</body>
+</html>
