@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner and Document Viewer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            box-sizing: border-box;
+            text-align: center;
+            background: url(truck.jpg);
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            align-items: center;
+            margin-top: 70px;
+        }
+        .container h1 {
+            color: #ffffff;
+        }
+        .section {
+            background-color: whitesmoke;
+            padding: 50px 30px;
+            border: 1.5px solid #b2b2b2;
+            border-radius: 0.25em;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.25);
+        }
+        #my-qr-reader {
+            padding: 20px !important;
+            border: 1.5px solid #b2b2b2 !important;
+            border-radius: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            border: 1px solid #b2b2b2;
+            outline: none;
+            border-radius: 0.25em;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            background-color: #008000ad;
+            transition: 0.3s background-color;
+        }
+        button:hover {
+            background-color: #008000;
+        }
+        video {
+            width: 100% !important;
+            border: 1px solid #b2b2b2 !important;
+            border-radius: 0.25em;
+        }
+        #form-container {
+            margin-top: 20px;
+            text-align: left;
+        }
+        #documents-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #b2b2b2;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scan QR Codes</h1>
+        <div class="section">
+            <div id="my-qr-reader"></div>
+            <div id="form-container"></div>
+            <button id="show-documents" style="display: none;">Show Documents</button>
+            <div id="documents-list"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script>
+        function domReady(fn) {
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                setTimeout(fn, 1000);
+            } else {
+                document.addEventListener("DOMContentLoaded", fn);
+            }
+        }
+
+        domReady(function () {
+            const formContainer = document.getElementById('form-container');
+            const documentsList = document.getElementById('documents-list');
+            const showDocumentsButton = document.getElementById('show-documents');
+            let uniqueKey = ''; 
+
+            function onScanSuccess(decodeText, decodeResult) {
+                uniqueKey = decodeText;
+                fetch(`/form-data/${uniqueKey}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const formData = data;
+                        const formHtml = `
+                            <table>
+                                ${Object.keys(formData).map(key => `
+                                    <tr>
+                                        <th>${key.replace(/_/g, ' ').toUpperCase()}</th>
+                                        <td>${JSON.stringify(formData[key])}</td>
+                                    </tr>
+                                `).join('')}
+                            </table>
+                        `;
+                        formContainer.innerHTML = formHtml;
+
+                        showDocumentsButton.style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Error fetching form data:', error);
+                        formContainer.innerHTML = 'Error fetching form data.';
+                    });
+            }
+
+            let htmlscanner = new Html5QrcodeScanner("my-qr-reader", { fps: 10, qrbox: 250 });
+            htmlscanner.render(onScanSuccess);
+
+            showDocumentsButton.addEventListener('click', () => {
+                if (!uniqueKey) {
+                    documentsList.innerHTML = 'No document key found.';
+                    return;
+                }
+
+                fetch(`/documents/${uniqueKey}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const documentsHtml = data.files.map(doc => `
+                            <div>
+                                <a href="/view/${uniqueKey}/${doc}" target="_blank">${doc}</a>
+                            </div>
+                        `).join('');
+                        documentsList.innerHTML = documentsHtml;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching documents:', error);
+                        documentsList.innerHTML = 'Error fetching documents.';
+                    });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransVault</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+            transition: background 0.5s, color 0.5s;
+        }
+        .dark-mode {
+            background: #1a1a1a;
+            color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+        }
+        .title {
+            font-size: 1.5em;
+        }
+        .donate-btn {
+            background: linear-gradient(45deg, #ff6f61, #ffcc00);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s, transform 0.3s;
+        }
+        .donate-btn:hover {
+            background: linear-gradient(45deg, #ff4c4c, #ffb300);
+            transform: scale(1.05);
+        }
+        .donate-btn:focus {
+            outline: none;
+        }
+        .menu {
+            display: none;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        section {
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="title">TransVault</div>
+        <a href="https://razorpay.me/@adityaraj7564" target="_blank" class="donate-btn">Donate</a>
+    </header>
+
+    <div class="container">
+        <section id="aim">
+            <h2>Dynamic parking System</h2>
+            <p>This will allow to utlise the unused land on lease to use as temporary parking slot.</p>
+        </section>
+        <section id="outcomes">
+            <h2>Real Time GPS</h2>
+            <p>This will allow to get the real time GPS data of the transportation.</p>
+        </section>
+        <section id="how-it-works">
+            <h2>Android App</h2>
+            <p>This will allow to directy use the scaning system in one click in the app</p>
+        </section>
+        <section id="usage">
+            <h2>Emergency System</h2>
+            <p>One Click Emergency System for the drivers.</p>
+        </section>
+        <section id="credits">
+            <h2>Job Alert System</h2>
+            <p>This feature will directly assign the drivers to the job without visiting the office</p>
+        </section>
+        <section id="background">
+            <h2>Automatic Document Verificaion</h2>
+            <p>This will allow to directly verify the uploaded documents through the Government Portal</p>
+        </section>
+        <section id="change-log">
+            <h2>API</h2>
+            <p>This will allow to use our service form any other ERP Portal</p>
+        </section>
+        <section id="known-bugs">
+            <h2>Change Log</h2>
+            <p>Added More Bugs and Glitches to Fix Later</p>
+        </section>
+        <section id="love">
+            <h2>Navigation</h2>
+            <p>This feature will allow drivers to navigate to the nearest petrol pump, dhaba or get the shortest path avilable.</p>
+        </section>
+    </div>
+</body>
+</html>
