@@ -1,0 +1,48 @@
+[
+  {
+    "id": "admin@email.com",
+    "password": "admin",
+    "role": "admin"
+  },
+  {
+    "id": "driver@email.com",
+    "password": "driver",
+    "role": "driver"
+  },
+  {
+    "fullName": "my name",
+    "role": "admin",
+    "id": "my@email.com",
+    "password": "password"
+  },
+  {
+    "fullName": "adityaraj",
+    "role": "admin",
+    "id": "myemial@email.com",
+    "password": "password"
+  },
+  {
+    "fullName": "Aditya Raj",
+    "role": "admin",
+    "id": "gmail@gmail.com",
+    "password": "india"
+  },
+  {
+    "fullName": "Aditya Raj",
+    "role": "admin",
+    "id": "aditya@4net.in",
+    "password": "kuchbhi"
+  },
+  {
+    "fullName": "name",
+    "role": "admin",
+    "id": "myid@id.com",
+    "password": "pass"
+  },
+  {
+    "fullName": "Aditya Raj",
+    "role": "admin",
+    "id": "myid@gmail.com",
+    "password": "myid"
+  }
+]
